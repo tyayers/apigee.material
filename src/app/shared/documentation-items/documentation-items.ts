@@ -40,19 +40,21 @@ export interface DocSection {
 const exampleNames = Object.keys(EXAMPLE_COMPONENTS);
 const CDK = 'cdk';
 const COMPONENTS = 'components';
+const APIS = 'apis';
+const PRICING = 'pricing';
+
 export const SECTIONS: { [key: string]: DocSection } = {
   [COMPONENTS]: {
-    name: 'Components',
+    name: 'APIs',
     summary: 'Angular Material offers a wide variety of UI components based on the <a' +
       ' href="https://material.io/components">Material Design specification</a>'
   },
   [CDK]: {
-    name: 'CDK',
+    name: 'Pricing',
     summary: 'The Component Dev Kit (CDK) is a set of behavior primitives for building UI' +
       ' components.'
   },
 };
-
 
 const DOCS: { [key: string]: DocItem[] } = {
   [COMPONENTS]: [
@@ -546,9 +548,49 @@ const DOCS: { [key: string]: DocItem[] } = {
   // docs more granularly than directory-level (within a11y) (same for viewport).
 };
 
-const ALL_COMPONENTS = processDocs('material', DOCS[COMPONENTS]);
-const ALL_CDK = processDocs('cdk', DOCS[CDK]);
-const ALL_DOCS = [...ALL_COMPONENTS, ...ALL_CDK];
+DOCS[COMPONENTS] = [    {
+  id: 'badge',
+  name: 'Badge',
+  summary: 'A small value indicator that can be overlaid on another object.',
+  exampleSpecs: {
+    prefix: 'badge-',
+  },
+  additionalApiDocs: [{name: 'Testing', path: 'material-badge-testing.html'}],
+}];
+
+fetch("http://localhost:8080/apim/apiproducts")
+.then(response => response.json())
+.then(data => {
+  
+  for (const element of data.apiproducts) {
+    DOCS[COMPONENTS].push({
+      id: element.name,
+      name: element.displayName,
+      summary: element.description,
+      exampleSpecs: {
+        prefix: element.name
+      }
+    });
+  }
+  // data.apiproducts.forEach((element: { name: any; displayName: any; description: any; }) => {
+  //   DOCS[COMPONENTS].push({
+  //     id: element.name,
+  //     name: element.displayName,
+  //     summary: element.description,
+  //     exampleSpecs: {
+  //       prefix: element.name
+  //     }
+  //   });
+  // }).then(() => {
+  ALL_COMPONENTS = processDocs('material', DOCS[COMPONENTS]);
+  ALL_CDK = processDocs('cdk', DOCS[CDK]);
+  ALL_DOCS = [...ALL_COMPONENTS, ...ALL_CDK];
+  //});
+});
+
+let ALL_COMPONENTS = processDocs('material', DOCS[COMPONENTS]);
+let ALL_CDK = processDocs('cdk', DOCS[CDK]);
+let ALL_DOCS = [...ALL_COMPONENTS, ...ALL_CDK];
 
 @Injectable()
 export class DocumentationItems {

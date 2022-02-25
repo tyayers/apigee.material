@@ -3,6 +3,8 @@ import {
   CanActivateComponentSidenav
 } from './pages/component-sidenav/component-sidenav-can-load-guard';
 
+import { CanActivateApisSidenav } from './pages/apis-sidenav/apis-sidenav-can-load-guard';
+
 export const MATERIAL_DOCS_ROUTES: Routes = [
   {
     path: '',

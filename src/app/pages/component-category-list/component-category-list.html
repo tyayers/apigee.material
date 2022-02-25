@@ -6,11 +6,11 @@
 <div class="docs-component-category-list" *ngIf="(params | async)?.section as section">
   <a *ngFor="let component of docItems.getItems(section)"
      class="docs-component-category-list-item"
-    [routerLink]="'/' + section + '/' + component.id">
+    [routerLink]="'/' + section + '/button'">
     <div class="docs-component-category-list-card">
       <img *ngIf="section === 'components'"
           class="docs-component-category-list-card-image-wrapper"
-          [src]="'../../../assets/screenshots/' + component.id + '.scene.png'"
+          [src]="'../../../assets/screenshots/button.scene.png'"
           loading="lazy"
           alt=""
           role="presentation"

@@ -43,6 +43,7 @@ export class ComponentViewer implements OnDestroy {
     if (_route.parent) {
       routeAndParentParams.push(_route.parent.params);
     }
+
     // Listen to changes on the current route for the doc id (e.g. button/checkbox) and the
     // parent route for the section (material/cdk).
     combineLatest(routeAndParentParams).pipe(
@@ -51,15 +52,18 @@ export class ComponentViewer implements OnDestroy {
           ({doc: docItems.getItemById(docIdAndSection.id, docIdAndSection.section),
             section: docIdAndSection.section}), takeUntil(this._destroyed))
     ).subscribe((docItemAndSection: {doc: DocItem | undefined, section: string}) => {
+      // alert(docItemAndSection.doc?.id)
+      // alert(docItemAndSection.section)
       if (docItemAndSection.doc !== undefined) {
+       
         this.componentDocItem.next(docItemAndSection.doc);
         this._componentPageTitle.title = `${docItemAndSection.doc.name}`;
 
-        if (docItemAndSection.doc.examples && docItemAndSection.doc.examples.length) {
-          this.sections.add('examples');
-        } else {
-          this.sections.delete('examples');
-        }
+        // if (docItemAndSection.doc.examples && docItemAndSection.doc.examples.length) {
+        //   this.sections.add('examples');
+        // } else {
+        //   this.sections.delete('examples');
+        // }
       } else {
         this.router.navigate(['/' + docItemAndSection.section]);
       }
@@ -150,8 +154,10 @@ export class ComponentOverview extends ComponentBaseView {
     // folder named after the component while the overview file is named similarly. e.g.
     //    `cdk#overlay`     -> `cdk/overlay/overlay.md`
     //    `material#button` -> `material/button/button.md`
-    const overviewPath = doc.overviewPath || `${doc.packageName}/${doc.id}/${doc.id}.html`;
-    return `/docs-content/overviews/${overviewPath}`;
+
+    // const overviewPath = doc.overviewPath || `${doc.packageName}/${doc.id}/${doc.id}.html`;
+    // return `/docs-content/overviews/${overviewPath}`;
+    return `/assets/pages/testapi.html`;
   }
 }
 
@@ -172,7 +178,8 @@ export class ComponentApi extends ComponentBaseView {
 
   getApiDocumentUrl(doc: DocItem) {
     const apiDocId = doc.apiDocId || `${doc.packageName}-${doc.id}`;
-    return `/docs-content/api-docs/${apiDocId}.html`;
+    //return `/docs-content/api-docs/${apiDocId}.html`;
+    return `/assets/pages/testapi.html`;
   }
 }
 
